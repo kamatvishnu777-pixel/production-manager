@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>प्रोडक्शन मैनेजर</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#e8ebee;--card:#fff;--ink:#14202b;--mute:#5d6b78;--line:#cfd6dc;--acc:#f2b705;--accink:#14202b;--bar:#2d4a63;--danger:#b3261e}
+:root:not([data-theme="light"]){}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10171d;--card:#1a2530;--ink:#eef2f5;--mute:#93a3b1;--line:#2c3b48;--bar:#7fa6c6;--danger:#ff8a80}}
+:root[data-theme="dark"]{--bg:#10171d;--card:#1a2530;--ink:#eef2f5;--mute:#93a3b1;--line:#2c3b48;--bar:#7fa6c6;--danger:#ff8a80}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Hind',system-ui,sans-serif;font-size:17px;line-height:1.4}
+header{background:var(--ink);color:#fff;padding:14px 16px 0}
+header h1{margin:0;font-size:22px;font-weight:700}.co{color:var(--acc);font-weight:600;margin:0;font-size:16px}.own{color:#aebbc6;font-size:14px;margin:0 0 10px}.row>div.w2{flex:1.8}#date{font-size:16px;padding:12px 8px}#now{font-size:13px;color:var(--bar);margin-left:6px}
+.tabs{display:flex;gap:4px}
+.tabs button{flex:1;border:0;background:transparent;color:#aebbc6;font:inherit;font-weight:600;padding:12px 0;border-bottom:4px solid transparent;cursor:pointer}
+.tabs button.on{color:#fff;border-bottom-color:var(--acc)}
+main{max-width:560px;margin:0 auto;padding:14px 14px 40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:14px}
+label{display:block;font-weight:600;font-size:15px;color:var(--mute);margin:10px 0 4px}
+input,select{width:100%;font:inherit;font-size:18px;padding:12px;border:1.5px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+input:focus{outline:3px solid var(--acc);border-color:var(--ink)}
+.row{display:flex;gap:10px}.row>div{flex:1;min-width:0}
+.big{font-size:26px;font-weight:700;text-align:center}
+.save{width:100%;margin-top:16px;padding:16px;font:inherit;font-size:20px;font-weight:700;background:var(--acc);color:var(--accink);border:0;border-radius:10px;cursor:pointer}
+.save:active{transform:scale(.98)}
+.msg{margin-top:10px;font-weight:600;min-height:1.4em}
+.ok{color:#2e7d32}.err{color:var(--danger)}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
+.stat small{color:var(--mute);font-weight:600}
+.stat b{display:block;font-size:30px;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat.hero{grid-column:1/3;background:var(--ink);color:#fff;border-color:var(--ink)}
+.stat.hero small{color:#aebbc6}.stat.hero b{font-size:44px;color:var(--acc)}
+h2{font-size:18px;margin:0 0 10px}
+.bars{overflow-x:auto}
+.bar{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:15px}
+.bar span:first-child{width:62px;flex:none;color:var(--mute)}
+.bar i{display:block;height:16px;background:var(--bar);border-radius:3px;min-width:2px}
+.bar span:last-child{font-variant-numeric:tabular-nums;font-weight:600}
+.item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-top:1px solid var(--line)}
+.item:first-of-type{border-top:0}
+.item small{color:var(--mute);display:block}
+.item button{border:1.5px solid var(--line);background:transparent;color:var(--danger);font:inherit;border-radius:8px;padding:6px 10px;cursor:pointer}
+.ghost{width:100%;padding:13px;font:inherit;font-weight:600;border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:10px;cursor:pointer}
+.empty{color:var(--mute);text-align:center;padding:16px 0}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <h1>प्रोडक्शन मैनेजर</h1><div class="co">विष्णु श्री एरन स्टील</div><div class="own">ओनर: विष्णु &nbsp;•&nbsp; फ़ोन: 8708021944</div>
+  <div class="tabs"><button id="t1" class="on">कॉइल एंट्री</button><button id="t2">मंथली रिपोर्ट</button></div>
+</header>
+<main>
+<section id="p1">
+  <div class="card">
+    <div class="row">
+      <div class="w2"><label for="date">तारीख और समय <a href="#" id="now">अभी का</a></label><input type="datetime-local" id="date"></div>
+      <div><label for="no">कॉइल नंबर</label><input id="no" autocomplete="off" placeholder="जैसे 1042"></div>
+    </div>
+    <label for="kg">कॉइल का वज़न (kg)</label>
+    <input id="kg" type="number" inputmode="decimal" class="big" placeholder="0">
+    <div class="row">
+      <div><label for="grade">ग्रेड</label><input id="grade" list="gl" placeholder="304"><datalist id="gl"><option value="304"><option value="316"><option value="316L"><option value="202"><option value="201"><option value="430"></datalist></div>
+      <div><label for="mc">मशीन / मिल नंबर</label><input id="mc" placeholder="जैसे 1"></div>
+    </div>
+    <div class="row">
+      <div><label for="thk">कॉइल की मोटाई (mm)</label><input id="thk" type="number" inputmode="decimal" placeholder="1.2"></div>
+      <div><label for="wid">कॉइल का साइज़ / चौड़ाई (mm)</label><input id="wid" type="number" inputmode="decimal" placeholder="150"></div>
+    </div>
+    <label for="ps">पाइप का साइज़</label><input id="ps" placeholder="जैसे 2 इंच, 25x25"><button class="save" id="save">सेव करो</button>
+    <div class="msg" id="msg"></div>
+  </div>
+  <div class="card"><h2>आज की एंट्री</h2><div id="today"></div></div>
+</section>
+
+<section id="p2" hidden>
+  <div class="card"><label for="mon" style="margin-top:0">महीना</label><input type="month" id="mon"></div>
+  <div class="stats">
+    <div class="stat hero"><small>कुल माल (टन)</small><b id="sTon">0</b></div>
+    <div class="stat"><small>कुल कॉइल</small><b id="sCnt">0</b></div>
+    <div class="stat"><small>औसत कॉइल (kg)</small><b id="sAvg">0</b></div>
+  </div>
+  <div class="card"><h2>रोज़ का प्रोडक्शन (kg)</h2><div class="bars" id="daily"></div></div>
+  <div class="card"><h2>ग्रेड के हिसाब से (kg)</h2><div class="bars" id="grades"></div></div>
+  <div class="card"><h2>इस महीने की सभी कॉइल</h2><div id="list"></div></div>
+  <button class="save" id="pdf" style="margin:0 0 10px">PDF रिपोर्ट बनाओ</button><button class="ghost" id="copy">रिपोर्ट कॉपी करो</button>
+  <div class="msg" id="cmsg"></div>
+</section>
+</main>
+<script>
+(function(){
+var KEY='pm_coils_v1',mem=[];
+function load(){try{var r=localStorage.getItem(KEY);return r?JSON.parse(r):mem}catch(e){return mem}}
+function store(a){mem=a;try{localStorage.setItem(KEY,JSON.stringify(a))}catch(e){}}
+var data=load();
+function $(i){return document.getElementById(i)}
+function today(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function f(n,d){return Number(n).toLocaleString('en-IN',{maximumFractionDigits:d==null?0:d})}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function nowdt(){var d=new Date();return today()+'T'+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}var dEdited=false;$('date').value=nowdt();$('date').oninput=function(){dEdited=true};$('now').onclick=function(e){e.preventDefault();dEdited=false;$('date').value=nowdt()};document.addEventListener('visibilitychange',function(){if(!dEdited)$('date').value=nowdt()});$('mon').value=today().slice(0,7);
+
+function tab(n){if(n===1&&!dEdited)$('date').value=nowdt();$('p1').hidden=n!==1;$('p2').hidden=n!==2;$('t1').className=n===1?'on':'';$('t2').className=n===2?'on':'';if(n===2)report()}
+$('t1').onclick=function(){tab(1)};$('t2').onclick=function(){tab(2)};
+
+function sups(){}
+function row(c){return '<div class="item"><div><b>#'+esc(c.no||'-')+'</b> &nbsp;'+f(c.kg,1)+' kg<small>'+esc(c.date)+(c.time?' '+esc(c.time):'')+(c.grade?' • '+esc(c.grade):'')+(c.ps?' • पाइप '+esc(c.ps):'')+(c.mc?' • मशीन '+esc(c.mc):'')+(c.thk||c.wid?' • '+esc(c.thk||'-')+'×'+esc(c.wid||'-')+' mm':'')+'</small></div><button data-id="'+c.id+'">हटाओ</button></div>'}
+function showToday(){var t=data.filter(function(c){return c.date===today()}).reverse();var kg=t.reduce(function(a,c){return a+c.kg},0);
+ $('today').innerHTML=t.length?'<div style="font-weight:700;margin-bottom:6px">'+t.length+' कॉइल • '+f(kg,1)+' kg</div>'+t.map(row).join(''):'<div class="empty">आज की कोई एंट्री नहीं। ऊपर पहली कॉइल डालिए।</div>'}
+
+$('save').onclick=function(){
+ var no=$('no').value.trim(),kg=parseFloat($('kg').value),m=$('msg');
+ if(!no){m.className='msg err';m.textContent='कॉइल नंबर लिखिए।';$('no').focus();return}
+ if(!(kg>0)){m.className='msg err';m.textContent='कॉइल का वज़न (kg) लिखिए।';$('kg').focus();return}
+ if(!(parseFloat($('thk').value)>0)){m.className='msg err';m.textContent='कॉइल की मोटाई (mm) लिखिए।';$('thk').focus();return}
+ if(!(parseFloat($('wid').value)>0)){m.className='msg err';m.textContent='कॉइल का साइज़ / चौड़ाई (mm) लिखिए।';$('wid').focus();return}
+ if(data.some(function(c){return c.no===no})&&!confirm('कॉइल '+no+' पहले से दर्ज है। फिर भी सेव करें?'))return;
+ var dv=($('date').value||nowdt()).split('T');data.push({id:Date.now(),date:dv[0],time:dv[1]||'',no:no,kg:kg,grade:$('grade').value.trim(),mc:$('mc').value.trim(),ps:$('ps').value.trim(),thk:$('thk').value,wid:$('wid').value});
+ store(data);m.className='msg ok';m.textContent='कॉइल '+no+' सेव हो गई ('+f(kg,1)+' kg)';
+ $('no').value='';$('kg').value='';if(!dEdited)$('date').value=nowdt();$('no').focus();showToday()};
+
+document.addEventListener('click',function(e){var b=e.target.closest('button[data-id]');if(!b)return;
+ if(!confirm('यह एंट्री हटानी है?'))return;
+ data=data.filter(function(c){return String(c.id)!==b.getAttribute('data-id')});store(data);showToday();if(!$('p2').hidden)report()});
+
+var cur=null;
+function bars(el,obj,fmt){var k=Object.keys(obj),mx=Math.max.apply(null,k.map(function(x){return obj[x]}).concat([1]));
+ el.innerHTML=k.length?k.map(function(x){return '<div class="bar"><span>'+esc(fmt?fmt(x):x)+'</span><i style="width:'+Math.round(obj[x]/mx*55)+'%"></i><span>'+f(obj[x],0)+'</span></div>'}).join(''):'<div class="empty">कोई डेटा नहीं</div>'}
+function report(){
+ var m=$('mon').value||today().slice(0,7);
+ var L=data.filter(function(c){return c.date.slice(0,7)===m}).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:a.id-b.id});
+ var tot=L.reduce(function(a,c){return a+c.kg},0),dy={},gr={};
+ L.forEach(function(c){dy[c.date]=(dy[c.date]||0)+c.kg;var g=c.grade||'बिना ग्रेड';gr[g]=(gr[g]||0)+c.kg});
+ $('sTon').textContent=f(tot/1000,3);$('sCnt').textContent=L.length;$('sAvg').textContent=L.length?f(tot/L.length,0):0;
+ bars($('daily'),dy,function(d){return d.slice(8)+'/'+d.slice(5,7)});bars($('grades'),gr);
+ $('list').innerHTML=L.length?L.slice().reverse().map(row).join(''):'<div class="empty">इस महीने की कोई एंट्री नहीं</div>';
+ var t='प्रोडक्शन रिपोर्ट '+m+'\nकुल कॉइल: '+L.length+'\nकुल माल: '+f(tot/1000,3)+' टन ('+f(tot,1)+' kg)\n\nदिनांक | कॉइल नं | ग्रेड | पाइप साइज़ | kg\n'+L.map(function(c){return c.date+' '+(c.time||'')+' | '+c.no+' | '+(c.grade||'-')+' | '+(c.ps||'-')+' | '+c.kg}).join('\n');
+ cur=t}
+$('mon').onchange=report;
+$('copy').onclick=function(){var m=$('cmsg');report();
+ function done(ok){m.className='msg '+(ok?'ok':'err');m.textContent=ok?'रिपोर्ट कॉपी हो गई। WhatsApp या Excel में पेस्ट कर सकते हैं।':'कॉपी नहीं हो पाई।'}
+ try{navigator.clipboard.writeText(cur).then(function(){done(true)},function(){done(false)})}catch(e){done(false)}};
+var PHONE='8708021944';
+var MN=['जनवरी','फ़रवरी','मार्च','अप्रैल','मई','जून','जुलाई','अगस्त','सितंबर','अक्टूबर','नवंबर','दिसंबर'];
+function dmy(d){return d.slice(8)+'/'+d.slice(5,7)+'/'+d.slice(0,4)}
+function buildPdf(js){var enc=new TextEncoder(),parts=[],len=0,offs=[],n=js.length;
+ function push(v){var b=typeof v==='string'?enc.encode(v):v;parts.push(b);len+=b.length}
+ function obj(i,fn){offs[i]=len;push(i+' 0 obj\n');fn();push('\nendobj\n')}
+ push('%PDF-1.4\n');
+ obj(1,function(){push('<< /Type /Catalog /Pages 2 0 R >>')});
+ obj(2,function(){push('<< /Type /Pages /Count '+n+' /Kids ['+js.map(function(_,i){return (3+3*i)+' 0 R'}).join(' ')+'] >>')});
+ js.forEach(function(j,i){var p=3+3*i,c=p+1,im=p+2,cs='q 595 0 0 842 0 0 cm /Im0 Do Q';
+  obj(p,function(){push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /XObject << /Im0 '+im+' 0 R >> >> /Contents '+c+' 0 R >>')});
+  obj(c,function(){push('<< /Length '+cs.length+' >>\nstream\n'+cs+'\nendstream')});
+  obj(im,function(){push('<< /Type /XObject /Subtype /Image /Width '+j.w+' /Height '+j.h+' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length '+j.bytes.length+' >>\nstream\n');push(j.bytes);push('\nendstream')})});
+ var N=3+3*n,xs=len,t='xref\n0 '+N+'\n0000000000 65535 f \n';
+ for(var k=1;k<N;k++)t+=String(offs[k]).padStart(10,'0')+' 00000 n \n';
+ push(t+'trailer\n<< /Size '+N+' /Root 1 0 R >>\nstartxref\n'+xs+'\n%%EOF');
+ return new Blob(parts,{type:'application/pdf'})}
+async function makePdf(){
+ var m=$('mon').value||today().slice(0,7);
+ var L=data.filter(function(c){return c.date.slice(0,7)===m}).sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:a.id-b.id});
+ var tot=L.reduce(function(a,c){return a+c.kg},0),gr={};
+ L.forEach(function(c){var g=c.grade||'बिना ग्रेड';gr[g]=(gr[g]||0)+c.kg});
+ var W=1240,H=1754,M=70,pages=[],cv,x,y,FF='Hind, sans-serif';
+ try{await document.fonts.load('700 30px Hind','विष्णु श्री');await document.fonts.load('400 24px Hind','कॉइल')}catch(e){}
+ function np(){cv=document.createElement('canvas');cv.width=W;cv.height=H;x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,H);pages.push(cv);y=M+20}
+ function T(s,px,wt,xx,yy,al,col,mw){x.font=wt+' '+px+'px '+FF;x.textAlign=al||'left';x.fillStyle=col||'#14202b';if(mw)x.fillText(String(s),xx,yy,mw);else x.fillText(String(s),xx,yy)}
+ var cols=[[M,'तारीख और समय','left',250],[330,'कॉइल नं','left',130],[470,'ग्रेड','left',90],[570,'पाइप साइज़','left',200],[780,'मोटाई','left',110],[900,'चौड़ाई','left',110],[W-M,'वज़न (kg)','right',150]];
+ function head(){x.fillStyle='#14202b';x.fillRect(M,y-30,W-2*M,44);cols.forEach(function(c){T(c[1],22,600,c[0]+(c[2]==='left'?8:-8),y,c[2],'#fff',c[3])});y+=44}
+ np();
+ T('विष्णु श्री एरन स्टील',46,700,M,y);y+=36;
+ T('ओनर: विष्णु'+(PHONE?'     फ़ोन: '+PHONE:''),26,400,M,y,'left','#5d6b78');y+=30;
+ x.fillStyle='#f2b705';x.fillRect(M,y,W-2*M,6);y+=58;
+ T('मंथली प्रोडक्शन रिपोर्ट: '+MN[+m.slice(5)-1]+' '+m.slice(0,4),36,700,M,y);y+=50;
+ T('कुल कॉइल: '+L.length,28,600,M,y);y+=40;
+ T('कुल माल: '+f(tot/1000,3)+' टन ('+f(tot,1)+' kg)',28,600,M,y);y+=40;
+ Object.keys(gr).forEach(function(g){T('ग्रेड '+g+': '+f(gr[g],1)+' kg',24,400,M,y,'left','#5d6b78');y+=34});
+ y+=34;head();
+ L.forEach(function(c,i){if(y>H-M-120){np();head()}
+  if(i%2===0){x.fillStyle='#eef1f4';x.fillRect(M,y-30,W-2*M,42)}
+  var v=[dmy(c.date)+' '+(c.time||''),c.no,c.grade||'-',c.ps||'-',c.thk||'-',c.wid||'-',f(c.kg,1)];
+  cols.forEach(function(k,j){T(v[j],24,400,k[0]+(k[2]==='left'?8:-8),y,k[2],'#14202b',k[3]-10)});y+=42});
+ if(!L.length)T('इस महीने की कोई एंट्री नहीं',26,400,M,y);
+ else{x.fillStyle='#14202b';x.fillRect(M,y-24,W-2*M,3);y+=16;T('कुल',26,700,M+8,y);T(f(tot,1),26,700,W-M-8,y,'right')}
+ pages.forEach(function(p,i){var g=p.getContext('2d');g.font='400 20px '+FF;g.fillStyle='#5d6b78';g.textAlign='left';g.fillText('बनाया गया: '+dmy(today())+'   पेज '+(i+1)+'/'+pages.length,M,H-40)});
+ var js=pages.map(function(p){var s=atob(p.toDataURL('image/jpeg',0.92).split(',')[1]),b=new Uint8Array(s.length);for(var i=0;i<s.length;i++)b[i]=s.charCodeAt(i);return{bytes:b,w:W,h:H}});
+ return buildPdf(js)}
+$('pdf').onclick=async function(){var m=$('cmsg');m.className='msg';m.textContent='PDF बन रही है...';
+ try{var dl=window.claude?await window.claude.use('downloads'):null;
+  if(false){m.className='msg err';m.textContent='यहाँ PDF सेव नहीं हो सकती। "रिपोर्ट कॉपी करो" इस्तेमाल करें।';return}
+  var blob=await makePdf();
+  var fn='production-report-'+($('mon').value||today().slice(0,7))+'.pdf';if(dl){await dl.save({filename:fn,data:blob})}else{var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fn;document.body.appendChild(a);a.click();a.remove()}
+  m.className='msg ok';m.textContent='PDF सेव हो गई। अब WhatsApp पर भेज सकते हैं।'}
+ catch(e){m.className='msg err';m.textContent=(e&&e.code==='declined')?'सेव रद्द किया गया।':'PDF नहीं बन पाई। फिर कोशिश करें।'}};
+sups();showToday();
+})();
+</script>
+</body>
+</html>
